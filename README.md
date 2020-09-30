@@ -5,6 +5,6 @@ All you need to set is the Pyton Flask environment and you ready to go !
 ![screenshoot](shopifrintpy1.png)
 
 ## Progress
-[x] Show unfulfilled orders
-[ ] Print each orders
-[ ] Print with price info
+- [x] Show unfulfilled orders
+- [ ] Print each orders
+- [ ] Print with price info
