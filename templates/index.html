@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <meta description="arecastudio" />
+    <title>Shopify Order Viewer</title>
+  </head>
+  <body style="background-color:#505050;">
+    <div style="margin:0 auto;max-width:700px;background-color:white;padding:15;">
+      <h1>Shopify Order</h1>
+      <div>
+	<marquee behavior="alternate">
+	  Please refresh to show updated data !
+	</marquee>
+      </div>
+      {% if data %}
+      {% for i in range(0,pjg) %}
+      <div class="itemdiv">
+	<div>ID: {{ data[i].name }}</div>
+	<div>
+	  <strong>{{ data[i].shipping_address.name.upper() }}</strong>
+	  <span>{{ data[i].shipping_address.phone }}</span>
+	</div>
+	<div>{{ data[i].shipping_address.address1 }}</div>
+	<div>{{ data[i].shipping_address.address2 }}</div>
+
+	<table border="0" style="border-collapse:collapse;margin:10px 0px 10px 0px;">
+	  <thead>
+	    <tr>
+	      <th>Qty</th>
+	      <th>Price</th>
+	      <th style="text-align:left;">Name</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    {% for ln in data[i].line_items %}
+	    <tr>
+	      <td style="padding:5px;text-align:right;">{{ ln.quantity }}</td>
+	      <td style="padding:5px;text-align:right;">{{ "{:,}".format(ln.price|float) }}</td>
+	      <td style="padding:5px;">{{ ln.title.upper() }}</td>
+	    </tr>
+	    {% endfor %}
+	    <tr>
+	      <td style="text-align:right;font-weight:bold;" colspan="2">{{ "{:,}".format(data[i].total_price|float) }}</td>
+	      <td>( TOTAL )</td>
+	    </tr>
+	  <tbody>
+	</table>
+	<div class="note">Buyer's Note: <span>{{ data[i].note }}</span></div>
+	<div style="line-height:60px;">
+	  <a
+	    href="http://localhost:5000/print/{{ data[i].id }}"
+	    class="btn"
+	    >
+	    PRINT with Price
+	  </a>
+	  <a
+	    href="http://localhost:5000/print/{{ data[i].id }}"
+	    class="btn"
+	    >
+	    PRINT
+	  </a>	  
+	</div>
+      </div>
+      {% endfor%}
+      {% else %}
+      empty
+      {% endif %}
+    </div>
+  </body>
+  <style>
+    .btn{
+	padding:5;
+	border-radius:5px;
+	color:white;
+	background-color:#555;
+	cursor:pointer;
+	margin-right:10px;
+	text-decoration:none;
+    }
+    .btn:hover{
+	background-color:#333;
+    }
+    .itemdiv{
+	margin:15px 0px 15px 0px;
+	background-color:#f0f0f0;
+	border-radius:10px;
+	padding:10px;
+	box-shadow:10px 10px 5px #ccc;
+    }
+    .itemdiv:hover{
+	box-shadow:10px 10px 5px #999;
+    }
+    .note{
+	background-color:#fff;
+	padding:5px;
+    }
+  </style>
+</html>
