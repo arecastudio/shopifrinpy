@@ -5,7 +5,7 @@
   </head>
   <body style="background-color:#505050;">
     <div style="margin:0 auto;max-width:700px;background-color:white;padding:15;">
-      <h1>Shopify Order</h1>
+      <a href="/" style="text-decoration:none;color:#555;"><h1>Shopify Print Order</h1></a>
       <div>
 	<marquee behavior="alternate">
 	  Please refresh to show updated data !
@@ -47,7 +47,7 @@
 	<div class="note">Buyer's Note: <span>{{ data[i].note }}</span></div>
 	<div style="line-height:60px;">
 	  <a
-	    href="http://localhost:5000/print/{{ data[i].id }}"
+	    href="http://localhost:5000/printwp/{{ data[i].id }}"
 	    class="btn"
 	    >
 	    PRINT with Price

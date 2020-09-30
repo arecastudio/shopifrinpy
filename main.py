@@ -27,5 +27,15 @@ def goPrint(item_id):
         print("PRINT ORDER:",item_id)
     return index()
 
+@app.route('/printwp/<int:item_id>',methods=['GET','POST'])
+def goPrintWP(item_id):
+    if request.method=='GET':
+        print("PRINT ORDER:",item_id)
+    return index()
+
+@app.errorhandler(404)
+def not_found(e):
+    return index()
+
 if __name__=='__main__':
     app.run(debug=True)
