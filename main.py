@@ -9,7 +9,7 @@ for delivery and order control purpose in warehouse
 from flask import Flask, render_template,request
 import shopify
 from config.key import DOMAIN, API_KEY, PASSWORD, API_VER
-
+from escpos.printer import Usb
 
 app=Flask(__name__)
 
@@ -25,6 +25,11 @@ def index():
 def goPrint(item_id):
     if request.method=='GET':
         print("PRINT ORDER:",item_id)
+        p = Usb(0x04b8,0x0202,0)
+        p.text("Hello World\n")
+        #p.image("logo.gif")
+        #p.barcode('1324354657687','EAN13',64,2,'','')
+        p.cut()
     return index()
 
 @app.route('/printwp/<int:item_id>',methods=['GET','POST'])
