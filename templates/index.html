@@ -15,6 +15,12 @@
       {% for i in range(0,pjg) %}
       <div class="itemdiv">
 	<div>ID: {{ data[i].name }}</div>
+	<div>{{ data[i].created_at }}</div>
+	{% if data[i].financial_status.lower()=='paid' %}
+	<div>PAYMENT STATUS: <strong style="color:green;">{{ data[i].financial_status.upper() }}</strong></div>
+	{% else %}
+	<div>PAYMENT STATUS: <strong style="color:red;">{{ data[i].financial_status.upper() }}</strong></div>
+	{% endif %}
 	<div>
 	  <strong>{{ data[i].shipping_address.name.upper() }}</strong>
 	  <span>{{ data[i].shipping_address.phone }}</span>

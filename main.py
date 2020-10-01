@@ -18,7 +18,7 @@ def index():
     if request.method=='GET':
         url = "https://%s:%s@%s/admin/api/%s" %(API_KEY,PASSWORD,DOMAIN,API_VER)
         shopify.ShopifyResource.set_site(url)
-        anyOrders = shopify.Order.find(fulfillment_status="any")
+        anyOrders = shopify.Order.find(fulfillment_status="all")
         return render_template('index.html',data=anyOrders,pjg=len(anyOrders))
 
 @app.route('/print/<int:item_id>',methods=['GET','POST'])
