@@ -6,7 +6,7 @@ This python script created to make easy printing
 for delivery and order control purpose in warehouse
 
 """
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request, redirect
 import shopify
 from config.key import DOMAIN, API_KEY, PASSWORD, API_VER
 #from escpos.printer import Usb
@@ -56,28 +56,51 @@ def goPrintWP(item_id):
         #filename=tempfile.mktemp(".txt")
         #open(filename,"w").write("hello")
         #os.startfile(filename,"print")
-        kitchen = Network("192.168.192.168") #Printer IP Address
+        #kitchen = Network("192.168.192.168") #Printer IP Address
+        kitchen=Network("192.168.52.137")
         #kitchen.text("\nHello World "+item_id)
         #kitchen.barcode('1324354657687', 'EAN13', 64, 2, '', '')
         #https://python-escpos.readthedocs.io/en/latest/api/escpos.html
-        kitchen.set(align="left")
+        kitchen.set(align="left",density=1)
         ordx = shopify.Order.find(item_id)
-        kitchen.text("\n"+ordx.name)
-        kitchen.text("\n"+ordx.created_at)
-        kitchen.text("\n"+ordx.financial_status)
-        kitchen.text("\n"+ordx.shipping_address.name)
-        kitchen.text("\n"+str(ordx.shipping_address.phone))
-        kitchen.text("\n"+str(ordx.shipping_address.address1))
-        kitchen.text("\n"+str(ordx.shipping_address.address2))
+        #kitchen.text("TEST AUTOMATIC PRINTING \n")
+        kitchen.text("FISHOP "+ordx.name)
+        kitchen.text("\nStatus: "+ordx.financial_status)
+        kitchen.text("\nDate  : "+ordx.created_at)
+        #shipping_method.title
+        kitchen.text("\n: "+ordx.shipping_lines[0].title)
+        kitchen.text("\n\n"+ordx.shipping_address.name)
+        kitchen.text("-"+str(ordx.shipping_address.phone))
+        kitchen.text("\n"+str(ordx.shipping_address.province))
+        _addr1=str(ordx.shipping_address.address1)
+        _addr2=str(ordx.shipping_address.address2)
+        if _addr1=='None':
+            _addr1="-"
+        if _addr2=='None':
+            _addr2="-"
+        #192.168.52.137
+        kitchen.text("\nAddr: "+_addr1)
+        kitchen.text("\n    : "+_addr2)
+        kitchen.text("\n")
+        kitchen.text("-"*32)
+        kitchen.text("\nQty  Price   Name")
         for lin in ordx.line_items:
-            kitchen.text("\n"+str(lin.quantity))
-            kitchen.text(" "+str(lin.price))
-            kitchen.text(" "+lin.title)
-        kitchen.text("\n"+str(ordx.total_price))
+            kitchen.text("\n  "+str(lin.quantity))
+            _price=int(float(lin.price))
+            kitchen.text("  "+format(_price,",d"))
+            kitchen.text("  "+lin.title)
+        #print("\n")
+        kitchen.text("\n")
+        kitchen.text("-"*32)
+        _total=int(float(ordx.total_price))
+        #_total=str(_total)
+        kitchen.text("\nTOTAL: "+format(_total,",d"))
         kitchen.text("\n")
         kitchen.text("\nNote:"+ordx.note)
+        kitchen.text("\n")
         kitchen.cut()
-        print("PRINT ORDER:",item_id)
+        #print("PRINT ORDER:",item_id)
+        return redirect("/",code=302)
     return index()
 
 @app.errorhandler(404)
