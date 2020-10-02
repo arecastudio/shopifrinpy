@@ -11,9 +11,12 @@ import shopify
 from config.key import DOMAIN, API_KEY, PASSWORD, API_VER
 #from escpos.printer import Usb
 #from escpos.connections import getNetworkPrinter
-from escpos.printer import Network
-
-
+#from escpos.printer import Network
+#from escpos import printer
+#from escpos import *
+#import escpos
+from escpos import printer
+#from escpos.printer.escpos import EscposIO
 import os
 import tempfile
 
@@ -29,40 +32,29 @@ def index():
         anyOrders = shopify.Order.find(fulfillment_status="all")
         return render_template('index.html',data=anyOrders,pjg=len(anyOrders))
 
-@app.route('/print/<int:item_id>',methods=['GET','POST'])
+@app.route('/printwpX/<item_id>',methods=['GET','POST'])
 def goPrint(item_id):
     if request.method=='GET':
-        #print("PRINT ORDER:",item_id)
-        #p = Usb(0x04b8,0x0202,0)
-        #p.text("Hello World\n")
-        #p.image("logo.gif")
-        #p.barcode('1324354657687','EAN13',64,2,'','')
-        #p.cut()
-
-        
-
-
-        printer = getNetworkPrinter()(host='192.168.192.168',port=9100)
-
-        printer.text("Hello World")
-        printer.lf()
+        return redirect("/",code=302)
     return index()
+    
 
 @app.route('/printwp/<item_id>',methods=['GET','POST'])
 def goPrintWP(item_id):
     if request.method=='GET':
         url = "https://%s:%s@%s/admin/api/%s" %(API_KEY,PASSWORD,DOMAIN,API_VER)
         shopify.ShopifyResource.set_site(url)
-        #filename=tempfile.mktemp(".txt")
-        #open(filename,"w").write("hello")
-        #os.startfile(filename,"print")
-        #kitchen = Network("192.168.192.168") #Printer IP Address
-        kitchen=Network("192.168.52.137")
-        #kitchen.text("\nHello World "+item_id)
-        #kitchen.barcode('1324354657687', 'EAN13', 64, 2, '', '')
-        #https://python-escpos.readthedocs.io/en/latest/api/escpos.html
-        kitchen.set(align="left",density=9,bold=True)
         ordx = shopify.Order.find(item_id)
+        #escpos.Escpos.set(bold=True)
+        #escpos.set(codepage=None,bold=True)
+        
+        #prn.set(bold=True)
+        #ep=escpos
+        kitchen=printer.Network("192.168.51.144")
+        #https://python-escpos.readthedocs.io/en/latest/api/escpos.html
+        
+        #kitchen.set(align="left")
+        
         #kitchen.text("TEST AUTOMATIC PRINTING \n")
         kitchen.text("FISHOP "+ordx.name)
         kitchen.text("\nStatus: "+ordx.financial_status)
@@ -97,7 +89,7 @@ def goPrintWP(item_id):
         kitchen.text("\nTOTAL: "+format(_total,",d"))
         kitchen.text("\n")
         kitchen.text("\nNote:"+ordx.note)
-        kitchen.text("\n\n")
+        kitchen.text("\n\n\ndfsfsfdf")
         kitchen.cut()
         #print("PRINT ORDER:",item_id)
         return redirect("/",code=302)
