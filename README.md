@@ -12,5 +12,5 @@ $ pip install -r requirements.txt
 
 ## Progress
 - [x] Show unfulfilled orders
-- [ ] Print each orders
-- [ ] Print with price info
+- [x] Print each orders
+- [x] Print with price info
