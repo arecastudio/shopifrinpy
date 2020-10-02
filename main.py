@@ -10,7 +10,7 @@ from flask import Flask, render_template,request, redirect
 import shopify
 from config.key import DOMAIN, API_KEY, PASSWORD, API_VER
 #from escpos.printer import Usb
-from escpos.connections import getNetworkPrinter
+#from escpos.connections import getNetworkPrinter
 from escpos.printer import Network
 
 
@@ -61,7 +61,7 @@ def goPrintWP(item_id):
         #kitchen.text("\nHello World "+item_id)
         #kitchen.barcode('1324354657687', 'EAN13', 64, 2, '', '')
         #https://python-escpos.readthedocs.io/en/latest/api/escpos.html
-        kitchen.set(align="left",density=1)
+        kitchen.set(align="left",density=9,bold=True)
         ordx = shopify.Order.find(item_id)
         #kitchen.text("TEST AUTOMATIC PRINTING \n")
         kitchen.text("FISHOP "+ordx.name)
@@ -97,7 +97,7 @@ def goPrintWP(item_id):
         kitchen.text("\nTOTAL: "+format(_total,",d"))
         kitchen.text("\n")
         kitchen.text("\nNote:"+ordx.note)
-        kitchen.text("\n")
+        kitchen.text("\n\n")
         kitchen.cut()
         #print("PRINT ORDER:",item_id)
         return redirect("/",code=302)
