@@ -9,14 +9,7 @@ for delivery and order control purpose in warehouse
 from flask import Flask, render_template,request, redirect
 import shopify
 from config.key import DOMAIN, API_KEY, PASSWORD, API_VER
-#from escpos.printer import Usb
-#from escpos.connections import getNetworkPrinter
-#from escpos.printer import Network
-#from escpos import printer
-#from escpos import *
-#import escpos
 from escpos import printer
-#from escpos.printer.escpos import EscposIO
 import os
 import tempfile
 
@@ -45,21 +38,13 @@ def goPrintWP(item_id):
         url = "https://%s:%s@%s/admin/api/%s" %(API_KEY,PASSWORD,DOMAIN,API_VER)
         shopify.ShopifyResource.set_site(url)
         ordx = shopify.Order.find(item_id)
-        #escpos.Escpos.set(bold=True)
-        #escpos.set(codepage=None,bold=True)
-        
-        #prn.set(bold=True)
-        #ep=escpos
         kitchen=printer.Network("192.168.51.144")
-        #https://python-escpos.readthedocs.io/en/latest/api/escpos.html
-        
-        #kitchen.set(align="left")
-        
+        #https://python-escpos.readthedocs.io/en/latest/api/escpos.html        
+        #kitchen.set(align="left")        
         #kitchen.text("TEST AUTOMATIC PRINTING \n")
         kitchen.text("FISHOP "+ordx.name)
         kitchen.text("\nStatus: "+ordx.financial_status)
         kitchen.text("\nDate  : "+ordx.created_at)
-        #shipping_method.title
         kitchen.text("\n: "+ordx.shipping_lines[0].title)
         kitchen.text("\n\n"+ordx.shipping_address.name)
         kitchen.text("-"+str(ordx.shipping_address.phone))
@@ -85,7 +70,6 @@ def goPrintWP(item_id):
         kitchen.text("\n")
         kitchen.text("-"*32)
         _total=int(float(ordx.total_price))
-        #_total=str(_total)
         kitchen.text("\nTOTAL: "+format(_total,",d"))
         kitchen.text("\n")
         kitchen.text("\nNote:"+ordx.note)
