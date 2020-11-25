@@ -25,6 +25,7 @@
 	{% else %}
 	<div>PAYMENT STATUS: <strong style="color:red;">{{ data[i].financial_status.upper() }}</strong></div>
 	{% endif %}
+	{% if data[i].shipping_address %}
 	<div>
 	  <strong>{{ data[i].shipping_address.name.upper() }}</strong>
 	  <span>{{ data[i].shipping_address.phone }}</span>
@@ -32,7 +33,7 @@
 	
 	<div>{{ data[i].shipping_address.address1 }}</div>
 	<div>{{ data[i].shipping_address.address2 }}</div>
-
+	{% endif %}
 	<table border="0" style="border-collapse:collapse;margin:10px 0px 10px 0px;">
 	  <thead>
 	    <tr>
